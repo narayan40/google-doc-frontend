@@ -24,7 +24,7 @@ export default function TextEditor() {
 
   // Establish socket connection
   useEffect(() => {
-    const s = io("import.meta.env.VITE_SOCKET_URL"); // ✅ Correct port
+    const s = io(import.meta.env.VITE_SOCKET_URL); // ✅ Correct port
     setSocket(s);
     return () => s.disconnect();
   }, []);
