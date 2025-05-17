@@ -4,6 +4,7 @@ import "quill/dist/quill.snow.css";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 
+//comment
 const SAVE_INTERVAL_MS = 2000;
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -31,7 +32,7 @@ export default function TextEditor() {
       return;
     }
 
-    const s = io(socketUrl, { transports: ["websocket"] });
+    const s = io(socketUrl);
 
     s.on("connect_error", (err) => {
       console.error("Socket connection error:", err.message);
