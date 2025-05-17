@@ -24,9 +24,23 @@ export default function TextEditor() {
 
   // Establish socket connection
   useEffect(() => {
-    const s = io(import.meta.env.VITE_SOCKET_URL); // ✅ Correct port
+    const socketUrl = import.meta.env.VITE_SOCKET_URL;
+    console.log("Connecting to socket at:", socketUrl);
+    if (!socketUrl) {
+      console.error("VITE_SOCKET_URL is not defined!");
+      return;
+    }
+
+    const s = io(socketUrl, { transports: ["websocket"] });
+
+    s.on("connect_error", (err) => {
+      console.error("Socket connection error:", err.message);
+    });
+
     setSocket(s);
-    return () => s.disconnect();
+    return () => {
+      s.disconnect();
+    };
   }, []);
 
   // Load document when socket & quill are ready
@@ -78,7 +92,7 @@ export default function TextEditor() {
     return () => quill.off("text-change", handler);
   }, [socket, quill]);
 
-  // Initialize Quill
+  // Initialize Quill editor
   const wrapperRef = useCallback((wrapper) => {
     if (wrapper == null) return;
 
